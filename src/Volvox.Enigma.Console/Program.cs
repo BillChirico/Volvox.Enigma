@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Volvox.Enigma.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine("Hello World!");
         }

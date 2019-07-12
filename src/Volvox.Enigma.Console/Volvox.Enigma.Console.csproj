@@ -1,8 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp2.2</TargetFramework>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Discord.Net" Version="2.2.0-dev-20190629.2" />
+      <PackageReference Include="TwitchLib.Api" Version="3.0.6-CI-20190707-175305" />
+    </ItemGroup>
 
 </Project>
