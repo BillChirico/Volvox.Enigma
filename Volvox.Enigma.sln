@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volvox.Enigma.Console", "src\Volvox.Enigma.Console\Volvox.Enigma.Console.csproj", "{DA1F5945-E6F9-419A-AD7B-CD339DC7FF5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA1F5945-E6F9-419A-AD7B-CD339DC7FF5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA1F5945-E6F9-419A-AD7B-CD339DC7FF5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA1F5945-E6F9-419A-AD7B-CD339DC7FF5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA1F5945-E6F9-419A-AD7B-CD339DC7FF5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
