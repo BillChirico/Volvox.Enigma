@@ -1,8 +1,10 @@
 {
-    "Hosts": [
-        {
-            "DiscordId": 191633014441115648,
-            "TwitchUsername": "bapes"
-        }
-    ]
+    "HostsConfig": {
+        "HostList": [
+            {
+                "DiscordId": 191633014441115648,
+                "TwitchUsername": "bapes"
+            }
+        ]
+    }
 }

@@ -14,8 +14,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Volvox.Engima.Service\Volvox.Engima.Service.csproj" />
       <ProjectReference Include="..\Volvox.Enigma.Domain\Volvox.Enigma.Domain.csproj" />
+      <ProjectReference Include="..\Volvox.Enigma.Service\Volvox.Enigma.Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>

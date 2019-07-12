@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volvox.Enigma.Console", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volvox.Enigma.Domain", "src\Volvox.Enigma.Domain\Volvox.Enigma.Domain.csproj", "{8F9CED4C-1DEC-40C8-9509-D1E75956A5F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volvox.Engima.Service", "src\Volvox.Engima.Service\Volvox.Engima.Service.csproj", "{6991FAC0-1AC4-4FE2-9696-AAAAB0B1A980}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volvox.Enigma.Service", "src\Volvox.Enigma.Service\Volvox.Enigma.Service.csproj", "{6991FAC0-1AC4-4FE2-9696-AAAAB0B1A980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

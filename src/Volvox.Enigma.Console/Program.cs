@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Volvox.Enigma.Domain.User;
+using Volvox.Enigma.Service.StreamAnnouncer;
 
 namespace Volvox.Enigma.Console
 {
@@ -11,12 +11,15 @@ namespace Volvox.Enigma.Console
         public static async Task Main(string[] args)
         {
             var serviceProvider = ConfigureServiceCollection(new ServiceCollection());
+
+            var streamAnnouncer = serviceProvider.GetRequiredService<StreamAnnouncer>();
         }
 
         private static ServiceProvider ConfigureServiceCollection(ServiceCollection serviceCollection)
         {
             return serviceCollection
-                .Configure<List<Host>>(GetSettingsFile("hosts.json", "Hosts"))
+                .Configure<Hosts>(GetSettingsFile("hosts.json", "HostsConfig"))
+                .AddSingleton<StreamAnnouncer>()
                 .BuildServiceProvider();
         }
 
