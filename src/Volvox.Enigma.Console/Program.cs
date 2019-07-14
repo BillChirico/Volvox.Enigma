@@ -18,8 +18,8 @@ namespace Volvox.Enigma.Console
         private static ServiceProvider ConfigureServiceCollection(ServiceCollection serviceCollection)
         {
             return serviceCollection
-                .Configure<Hosts>(GetSettingsFile("hosts.json", "HostsConfig"))
-                .AddSingleton<StreamAnnouncer>()
+                .Configure<Hosts>(GetSettingsFile("appsettings.json", "HostsConfig"))
+                .AddSingleton<IStreamAnnouncer, StreamAnnouncer>()
                 .BuildServiceProvider();
         }
 

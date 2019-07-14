@@ -3,7 +3,7 @@ using Volvox.Enigma.Domain.User;
 
 namespace Volvox.Enigma.Service.StreamAnnouncer
 {
-    public class StreamAnnouncer
+    public class StreamAnnouncer : IStreamAnnouncer
     {
         private readonly Hosts _hosts;
 
