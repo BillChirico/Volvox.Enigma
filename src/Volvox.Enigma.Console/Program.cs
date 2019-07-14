@@ -1,7 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Volvox.Enigma.Domain.Settings;
 using Volvox.Enigma.Domain.User;
+using Volvox.Enigma.Service.Discord;
 using Volvox.Enigma.Service.StreamAnnouncer;
 
 namespace Volvox.Enigma.Console
@@ -12,14 +18,24 @@ namespace Volvox.Enigma.Console
         {
             var serviceProvider = ConfigureServiceCollection(new ServiceCollection());
 
-            var streamAnnouncer = serviceProvider.GetRequiredService<StreamAnnouncer>();
+            var settings = serviceProvider.GetRequiredService<IOptions<Settings>>().Value;
+
+            var discordBot = serviceProvider.GetRequiredService<IDiscordBot>();
+
+            await discordBot.Connect(settings.DiscordBotToken);
+
+            await Task.Delay(Timeout.Infinite);
         }
 
         private static ServiceProvider ConfigureServiceCollection(ServiceCollection serviceCollection)
         {
             return serviceCollection
                 .Configure<Hosts>(GetSettingsFile("appsettings.json", "HostsConfig"))
+                .Configure<Settings>(GetSettingsFile("appsettings.json", "Settings"))
                 .AddSingleton<IStreamAnnouncer, StreamAnnouncer>()
+                .AddSingleton<IDiscordBot, DiscordBot>()
+                .AddSingleton<DiscordSocketClient>()
+                .AddLogging(configure => configure.AddConsole())
                 .BuildServiceProvider();
         }
 

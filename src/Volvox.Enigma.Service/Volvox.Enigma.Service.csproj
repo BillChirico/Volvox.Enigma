@@ -6,6 +6,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Discord.Net" Version="2.2.0-dev-20190629.2" />
+        <PackageReference Include="TwitchLib.Api" Version="3.0.6-CI-20190707-175305" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Volvox.Enigma.Domain\Volvox.Enigma.Domain.csproj" />
     </ItemGroup>
 
