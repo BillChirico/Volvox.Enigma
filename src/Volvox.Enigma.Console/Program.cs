@@ -29,12 +29,21 @@ namespace Volvox.Enigma.Console
 
         private static ServiceProvider ConfigureServiceCollection(ServiceCollection serviceCollection)
         {
-            return serviceCollection
+            // Settings
+            serviceCollection
                 .Configure<Hosts>(GetSettingsFile("appsettings.json", "HostsConfig"))
-                .Configure<Settings>(GetSettingsFile("appsettings.json", "Settings"))
-                .AddSingleton<IStreamAnnouncer, StreamAnnouncer>()
+                .Configure<Settings>(GetSettingsFile("appsettings.json", "Settings"));
+
+            // Services
+            serviceCollection
+                .AddSingleton<IStreamAnnouncer, StreamAnnouncer>();
+
+            // Discord
+            serviceCollection
                 .AddSingleton<IDiscordBot, DiscordBot>()
-                .AddSingleton<DiscordSocketClient>()
+                .AddSingleton<DiscordSocketClient>();
+
+            return serviceCollection
                 .AddLogging(configure => configure.AddConsole())
                 .BuildServiceProvider();
         }

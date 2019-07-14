@@ -9,6 +9,7 @@
     <ItemGroup>
       <PackageReference Include="Discord.Net" Version="2.2.0-dev-20190629.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
