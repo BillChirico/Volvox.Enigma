@@ -7,18 +7,11 @@
 
     <ItemGroup>
         <PackageReference Include="Discord.Net" Version="2.2.0-dev-20190629.2" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
         <PackageReference Include="TwitchLib.Api" Version="3.0.6-CI-20190707-175305" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Volvox.Enigma.Domain\Volvox.Enigma.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Options, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.options\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
 </Project>
