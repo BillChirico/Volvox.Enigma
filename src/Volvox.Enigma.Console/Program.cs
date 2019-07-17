@@ -9,6 +9,7 @@ using Volvox.Enigma.Domain.Settings;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
 using Volvox.Enigma.Service.StreamAnnouncer;
+using Volvox.Enigma.Service.Twitch;
 
 namespace Volvox.Enigma.Console
 {
@@ -42,6 +43,13 @@ namespace Volvox.Enigma.Console
             serviceCollection
                 .AddSingleton<IDiscordBot, DiscordBot>()
                 .AddSingleton<DiscordSocketClient>();
+
+            // Twitch Api
+            serviceCollection
+                .AddSingleton(provider =>
+                    TwitchApiFactory.Create(
+                        provider.GetRequiredService<IOptions<Settings>>().Value.TwitchClientId,
+                        provider.GetRequiredService<IOptions<Settings>>().Value.TwitchAccessToken));
 
             return serviceCollection
                 .AddLogging(configure => configure.AddConsole())
