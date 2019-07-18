@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TwitchLib.Api.Interfaces;
 using Volvox.Enigma.Domain.Settings;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
@@ -23,6 +24,8 @@ namespace Volvox.Enigma.Console
 
             var discordBot = serviceProvider.GetRequiredService<IDiscordBot>();
 
+            var twitchApi = serviceProvider.GetRequiredService<ITwitchAPI>();
+
             await discordBot.Connect(settings.DiscordBotToken);
 
             await Task.Delay(Timeout.Infinite);
@@ -30,28 +33,28 @@ namespace Volvox.Enigma.Console
 
         private static ServiceProvider ConfigureServiceCollection(ServiceCollection serviceCollection)
         {
-            // Settings
-            serviceCollection
+            return serviceCollection
+                // Settings
                 .Configure<Hosts>(GetSettingsFile("appsettings.json", "HostsConfig"))
-                .Configure<Settings>(GetSettingsFile("appsettings.json", "Settings"));
+                .Configure<Settings>(GetSettingsFile("appsettings.json", "Settings"))
 
-            // Services
-            serviceCollection
-                .AddSingleton<IStreamAnnouncer, StreamAnnouncer>();
+                // Services
+                .AddSingleton<IStreamAnnouncer, StreamAnnouncer>()
 
-            // Discord
-            serviceCollection
+                // Discord
                 .AddSingleton<IDiscordBot, DiscordBot>()
-                .AddSingleton<DiscordSocketClient>();
+                .AddSingleton<DiscordSocketClient>()
 
-            // Twitch Api
-            serviceCollection
+                // Twitch Api
                 .AddSingleton(provider =>
                     TwitchApiFactory.Create(
                         provider.GetRequiredService<IOptions<Settings>>().Value.TwitchClientId,
-                        provider.GetRequiredService<IOptions<Settings>>().Value.TwitchAccessToken));
+                        provider.GetRequiredService<IOptions<Settings>>().Value.TwitchAccessToken))
 
-            return serviceCollection
+                // Helpers
+                .AddSingleton<ITwitchApiHelper, TwitchApiHelper>()
+
+                // Logging
                 .AddLogging(configure => configure.AddConsole())
                 .BuildServiceProvider();
         }
