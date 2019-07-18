@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TwitchLib.Api.Interfaces;
 using Volvox.Enigma.Domain.Settings;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
@@ -20,13 +19,23 @@ namespace Volvox.Enigma.Console
         {
             var serviceProvider = ConfigureServiceCollection(new ServiceCollection());
 
+            // Settings
             var settings = serviceProvider.GetRequiredService<IOptions<Settings>>().Value;
+            var hosts = serviceProvider.GetRequiredService<IOptions<Hosts>>().Value;
 
+            // Services
+            var streamAnnouncer = serviceProvider.GetRequiredService<IStreamAnnouncer>();
+
+            // Discord
             var discordBot = serviceProvider.GetRequiredService<IDiscordBot>();
-
-            var twitchApi = serviceProvider.GetRequiredService<ITwitchAPI>();
+            var discordSocketClient = serviceProvider.GetRequiredService<DiscordSocketClient>();
 
             await discordBot.Connect(settings.DiscordBotToken);
+
+            discordSocketClient.Ready += async () =>
+            {
+                await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId);
+            };
 
             await Task.Delay(Timeout.Infinite);
         }
