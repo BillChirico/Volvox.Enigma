@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using TwitchLib.Api.Helix.Models.Games;
 using TwitchLib.Api.Helix.Models.Streams;
+using TwitchLib.Api.Helix.Models.Users;
 
 namespace Volvox.Enigma.Service.Twitch
 {
@@ -10,11 +11,18 @@ namespace Volvox.Enigma.Service.Twitch
     public interface ITwitchApiHelper
     {
         /// <summary>
+        ///     Get the Twitch user.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <returns>Twitch user.</returns>
+        Task<User> GetUser(string username);
+        
+        /// <summary>
         ///     Get the current stream of the user.
         /// </summary>
-        /// <param name="username">User to get the stream.</param>
+        /// <param name="user">User to get the stream.</param>
         /// <returns>Stream of the current user or null if they are not streaming.</returns>
-        Task<Stream> GetStream(string username);
+        Task<Stream> GetStream(User user);
 
         /// <summary>
         ///     Get the game that the user is currently streaming.

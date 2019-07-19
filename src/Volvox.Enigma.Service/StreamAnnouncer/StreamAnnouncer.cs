@@ -1,9 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
+using TwitchLib.Api.Helix.Models.Streams;
+using TwitchLib.Api.Helix.Models.Users;
 using Volvox.Enigma.Domain.User;
+using Volvox.Enigma.Service.Discord;
 using Volvox.Enigma.Service.Twitch;
+using Game = TwitchLib.Api.Helix.Models.Games.Game;
 
 namespace Volvox.Enigma.Service.StreamAnnouncer
 {
@@ -32,9 +38,15 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
                 return;
             }
 
+            var users = new Dictionary<Host, (User, Stream, Game)>();
+
             foreach (var host in hosts)
             {
-                var stream = await _twitchApiHelper.GetStream(host.TwitchUsername);
+                var user = await _twitchApiHelper.GetUser(host.TwitchUsername);
+
+                if (user == null) continue;
+
+                var stream = await _twitchApiHelper.GetStream(user);
 
                 if (stream == null) continue;
 
@@ -42,8 +54,16 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                 if (game == null) continue;
 
-                await channel.SendMessageAsync("test");
+                // Only announce Fortnite and Zone Wars
+                if (game.Name != "Fortnite" ||
+                    !stream.Title.StartsWith("Zone Wars", StringComparison.InvariantCultureIgnoreCase)) continue;
+
+                users.Add(host, (user, stream, game));
             }
+
+            await channel.SendMessageAsync(string.Empty,
+                embed: EmbedHelper.GetStreamAnnouncementEmbed("Verified Hosts", "No verified hosts are online!",
+                    Color.Purple, users));
         }
     }
 }
