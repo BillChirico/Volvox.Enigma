@@ -21,7 +21,7 @@ namespace Volvox.Enigma.Service.Twitch
         /// <inheritdoc />
         public async Task<User> GetUser(string username)
         {
-            var user = (await _twitchApi.Helix.Users.GetUsersAsync(logins: new List<string> {username})).Users
+            var user = ( await _twitchApi.Helix.Users.GetUsersAsync(logins: new List<string> {username}) ).Users
                 .FirstOrDefault();
 
             return user;
@@ -30,7 +30,7 @@ namespace Volvox.Enigma.Service.Twitch
         /// <inheritdoc />
         public async Task<Stream> GetStream(User user)
         {
-            var stream = (await _twitchApi.Helix.Streams.GetStreamsAsync(userLogins: new List<string> {user.Login}))
+            var stream = ( await _twitchApi.Helix.Streams.GetStreamsAsync(userLogins: new List<string> {user.Login}) )
                 .Streams.FirstOrDefault();
 
             return stream;
@@ -39,7 +39,7 @@ namespace Volvox.Enigma.Service.Twitch
         /// <inheritdoc />
         public async Task<Game> GetStreamGame(Stream stream)
         {
-            var game = (await _twitchApi.Helix.Games.GetGamesAsync(new List<string> {stream.GameId})).Games
+            var game = ( await _twitchApi.Helix.Games.GetGamesAsync(new List<string> {stream.GameId}) ).Games
                 .FirstOrDefault();
 
             return game;

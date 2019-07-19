@@ -58,7 +58,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
                 if (game.Name != "Fortnite" ||
                     !stream.Title.StartsWith("Zone Wars", StringComparison.InvariantCultureIgnoreCase)) continue;
 
-                users.Add(host, (user, stream, game));
+                users.Add(host, ( user, stream, game ));
             }
 
             await channel.SendMessageAsync(string.Empty,

@@ -48,9 +48,7 @@ namespace Volvox.Enigma.Service.Discord
             }
 
             else
-            {
                 embedBuilder.WithDescription(offlineMessage);
-            }
 
             return embedBuilder.Build();
         }
