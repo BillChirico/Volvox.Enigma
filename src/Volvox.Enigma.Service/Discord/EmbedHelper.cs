@@ -34,8 +34,7 @@ namespace Volvox.Enigma.Service.Discord
                     if (stream == default || game == default) continue;
 
                     var description =
-                        $"[{user.DisplayName}](https://www.twitch.tv/{user.Login}) | {game.Name} | "
-                        + $"{stream.ViewerCount} Viewers | {host.Region}";
+                        $"[{user.DisplayName}](https://www.twitch.tv/{user.Login}) | {stream.ViewerCount} Viewers | {host.Region}";
 
                     // Check if the description is over the Discord limit
                     if (streamDescriptions.Sum(x => x.Length) + description.Length > 2000) break;
