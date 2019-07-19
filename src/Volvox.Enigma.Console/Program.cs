@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
@@ -34,8 +35,13 @@ namespace Volvox.Enigma.Console
 
             discordSocketClient.Ready += async () =>
             {
-                await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
-                    settings.DiscordHostRoleId);
+                while (true)
+                {
+                    await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
+                        settings.DiscordHostRoleId);
+
+                    await Task.Delay(TimeSpan.FromSeconds(15));
+                }
             };
 
             await Task.Delay(Timeout.Infinite);
