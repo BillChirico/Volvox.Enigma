@@ -34,7 +34,8 @@ namespace Volvox.Enigma.Console
 
             discordSocketClient.Ready += async () =>
             {
-                await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId);
+                await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
+                    settings.DiscordHostRoleId);
             };
 
             await Task.Delay(Timeout.Infinite);

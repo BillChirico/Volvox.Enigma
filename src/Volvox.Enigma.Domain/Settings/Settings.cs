@@ -8,6 +8,8 @@ namespace Volvox.Enigma.Domain.Settings
 
         public ulong DiscordChannelId { get; set; }
 
+        public ulong DiscordHostRoleId { get; set; }
+
         public string TwitchClientId { get; set; }
 
         public string TwitchAccessToken { get; set; }

@@ -11,6 +11,7 @@ namespace Volvox.Enigma.Domain.User
 
     public enum Region
     {
-        NAE
+        NAE,
+        EU
     }
 }

@@ -6,6 +6,6 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 {
     public interface IStreamAnnouncer
     {
-        Task Announce(IEnumerable<Host> hosts, ulong guildId, ulong channelId);
+        Task Announce(IEnumerable<Host> hosts, ulong guildId, ulong channelId, ulong roleId);
     }
 }
