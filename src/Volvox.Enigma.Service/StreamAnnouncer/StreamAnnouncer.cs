@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,9 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
         public async Task Announce(IEnumerable<Host> hosts, ulong guildId, ulong channelId, ulong roleId)
         {
+            var stopWatch = Stopwatch.StartNew();
+            _logger.LogInformation("Starting stream announcer");
+
             var guild = _discordClient.GetGuild(guildId);
 
             if (guild == null)
@@ -81,6 +85,10 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
             await channel.SendMessageAsync(string.Empty,
                 embed: EmbedHelper.GetStreamAnnouncementEmbed("Verified Hosts", "No verified hosts are online!",
                     role.Color, users));
+
+            stopWatch.Stop();
+
+            _logger.LogInformation("Finished stream announcer ({ElapsedMilliseconds}ms)", stopWatch.ElapsedMilliseconds);
         }
     }
 }

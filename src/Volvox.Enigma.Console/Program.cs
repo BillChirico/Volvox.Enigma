@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
@@ -33,18 +32,29 @@ namespace Volvox.Enigma.Console
 
             await discordBot.Connect(settings.DiscordBotToken);
 
-            discordSocketClient.Ready += async () =>
-            {
-                while (true)
-                {
-                    await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
-                        settings.DiscordHostRoleId);
+            var ready = false;
 
-                    await Task.Delay(TimeSpan.FromSeconds(15));
-                }
+            discordSocketClient.Ready += () =>
+            {
+                ready = true;
+
+                return Task.CompletedTask;
             };
 
-            await Task.Delay(Timeout.Infinite);
+            // Wait for all connectable services to be ready
+            while (!ready)
+            {
+            }
+
+            // Run interval tasks
+            await Task.Run(async
+                () =>
+            {
+                await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
+                    settings.DiscordHostRoleId);
+
+                await Task.Delay(TimeSpan.FromSeconds(15));
+            });
         }
 
         private static ServiceProvider ConfigureServiceCollection(ServiceCollection serviceCollection)
