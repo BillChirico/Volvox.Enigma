@@ -16,7 +16,7 @@ namespace Volvox.Enigma.Service.Twitch
         /// <param name="username">Username of the user.</param>
         /// <returns>Twitch user.</returns>
         Task<User> GetUser(string username);
-        
+
         /// <summary>
         ///     Get the current stream of the user.
         /// </summary>
