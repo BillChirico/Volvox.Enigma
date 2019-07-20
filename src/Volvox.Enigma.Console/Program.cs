@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
-using Serilog.Core;
 using Volvox.Enigma.Domain.Settings;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
