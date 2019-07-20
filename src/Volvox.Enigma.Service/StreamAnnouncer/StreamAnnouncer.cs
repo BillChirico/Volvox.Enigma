@@ -10,17 +10,18 @@ using TwitchLib.Api.Helix.Models.Users;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
 using Volvox.Enigma.Service.Twitch;
+using ILogger = Serilog.ILogger;
 
 namespace Volvox.Enigma.Service.StreamAnnouncer
 {
     public class StreamAnnouncer : IStreamAnnouncer
     {
         private readonly DiscordSocketClient _discordClient;
-        private readonly ILogger<StreamAnnouncer> _logger;
+        private readonly ILogger _logger;
         private readonly ITwitchApiHelper _twitchApiHelper;
 
         public StreamAnnouncer(DiscordSocketClient discordClient, ITwitchApiHelper twitchApiHelper,
-            ILogger<StreamAnnouncer> logger)
+            ILogger logger)
         {
             _discordClient = discordClient;
             _twitchApiHelper = twitchApiHelper;
@@ -30,7 +31,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
         public async Task Announce(IEnumerable<Host> hosts, ulong guildId, ulong channelId, ulong roleId)
         {
             var stopWatch = Stopwatch.StartNew();
-            _logger.LogInformation("Starting stream announcer");
+            _logger.Information("Starting stream announcer");
 
             try
             {
@@ -38,7 +39,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                 if (guild == null)
                 {
-                    _logger.LogError("Could not find guild!");
+                    _logger.Error("Could not find guild!");
 
                     return;
                 }
@@ -47,7 +48,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                 if (channel == null)
                 {
-                    _logger.LogError("Could not find channel to announce streams!");
+                    _logger.Error("Could not find channel to announce streams!");
 
                     return;
                 }
@@ -56,7 +57,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                 if (role == null)
                 {
-                    _logger.LogError("Could not find host role!");
+                    _logger.Error("Could not find host role!");
 
                     return;
                 }
@@ -90,13 +91,11 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, $"Error occured while announcing streams: {exception}");
+                _logger.Error(exception, $"Error occured while announcing streams: {exception}");
             }
 
             stopWatch.Stop();
-
-            _logger.LogInformation("Finished stream announcer ({ElapsedMilliseconds}ms)",
-                stopWatch.ElapsedMilliseconds);
+            _logger.Information($"Finished stream announcer ({stopWatch.ElapsedMilliseconds}ms)");
         }
     }
 }

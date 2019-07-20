@@ -6,11 +6,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Core;
 using Volvox.Enigma.Domain.Settings;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
 using Volvox.Enigma.Service.StreamAnnouncer;
 using Volvox.Enigma.Service.Twitch;
+using ILogger = Serilog.ILogger;
 
 namespace Volvox.Enigma.Console
 {
@@ -18,7 +21,12 @@ namespace Volvox.Enigma.Console
     {
         public static async Task Main(string[] args)
         {
+        
             var serviceProvider = ConfigureServiceCollection(new ServiceCollection());
+
+            // Serilog
+            var serilog = serviceProvider.GetRequiredService<ILogger>();
+            serilog.Information("Initialising Volvox.Enigma");
 
             // Settings
             var settings = serviceProvider.GetRequiredService<IOptions<Settings>>().Value;
@@ -38,7 +46,6 @@ namespace Volvox.Enigma.Console
             discordSocketClient.Ready += () =>
             {
                 ready = true;
-
                 return Task.CompletedTask;
             };
 
@@ -47,6 +54,7 @@ namespace Volvox.Enigma.Console
             {
             }
 
+            serilog.Information("Volvox.Enigma initialised");
             // Run interval tasks
             await Task.Run(async
                 () =>
@@ -76,6 +84,9 @@ namespace Volvox.Enigma.Console
                 // Discord
                 .AddSingleton<IDiscordBot, DiscordBot>()
                 .AddSingleton<DiscordSocketClient>()
+
+                // Serilog
+                .AddSingleton((ILogger)new LoggerConfiguration().WriteTo.Async(a => a.RollingFile("logs/enigma-{Date}.log")).WriteTo.Console().CreateLogger())
 
                 // Twitch Api
                 .AddSingleton(provider =>
