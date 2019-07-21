@@ -20,7 +20,6 @@ namespace Volvox.Enigma.Console
     {
         public static async Task Main(string[] args)
         {
-        
             var serviceProvider = ConfigureServiceCollection(new ServiceCollection());
 
             // Serilog
@@ -54,6 +53,7 @@ namespace Volvox.Enigma.Console
             }
 
             serilog.Information("Volvox.Enigma initialised");
+
             // Run interval tasks
             await Task.Run(async
                 () =>
@@ -85,7 +85,10 @@ namespace Volvox.Enigma.Console
                 .AddSingleton<DiscordSocketClient>()
 
                 // Serilog
-                .AddSingleton((ILogger)new LoggerConfiguration().WriteTo.Async(a => a.RollingFile("logs/enigma-{Date}.log")).WriteTo.Console().CreateLogger())
+                .AddSingleton((ILogger)new LoggerConfiguration()
+                    .WriteTo.Async(a => a.RollingFile("logs/enigma-{Date}.log"))
+                    .WriteTo.Console()
+                    .CreateLogger())
 
                 // Twitch Api
                 .AddSingleton(provider =>

@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Discord;
 using Discord.WebSocket;
-using Microsoft.Extensions.Logging;
-using TwitchLib.Api.Helix.Models.Games;
+using Serilog;
 using TwitchLib.Api.Helix.Models.Streams;
 using TwitchLib.Api.Helix.Models.Users;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
 using Volvox.Enigma.Service.Twitch;
-using ILogger = Serilog.ILogger;
+using Game = TwitchLib.Api.Helix.Models.Games.Game;
 
 namespace Volvox.Enigma.Service.StreamAnnouncer
 {
@@ -84,6 +85,13 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                     users.Add(host, ( user, stream, game ));
                 }
+
+                // Delete all previous messages from the bot
+                var messages =
+                    ( await channel.GetMessagesAsync().FlattenAsync() ).Where(m =>
+                        m.Author.Id == _discordClient.CurrentUser.Id);
+
+                await channel.DeleteMessagesAsync(messages);
 
                 await channel.SendMessageAsync(string.Empty,
                     embed: EmbedHelper.GetStreamAnnouncementEmbed("Verified Hosts", "No verified hosts are online!",
