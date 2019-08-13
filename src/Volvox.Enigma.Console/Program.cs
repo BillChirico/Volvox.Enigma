@@ -37,20 +37,21 @@ namespace Volvox.Enigma.Console
             var discordBot = serviceProvider.GetRequiredService<IDiscordBot>();
             var discordSocketClient = serviceProvider.GetRequiredService<DiscordSocketClient>();
 
-            await discordBot.Connect(settings.DiscordBotToken);
+            // Reset event
+            var mre = new ManualResetEvent(false);
 
-            var ready = false;
+            await discordBot.Connect(settings.DiscordBotToken);
 
             discordSocketClient.Ready += () =>
             {
-                ready = true;
+                serilog.Information("Discord is ready");
+                mre.Set();
+
                 return Task.CompletedTask;
             };
 
             // Wait for all connectable services to be ready
-            while (!ready)
-            {
-            }
+            mre.WaitOne();
 
             serilog.Information("Volvox.Enigma initialised");
 
