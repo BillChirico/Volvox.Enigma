@@ -77,6 +77,7 @@ namespace Volvox.Enigma.Console
                 // Settings
                 .Configure<Hosts>(GetSettingsFile("appsettings.json", "HostsConfig"))
                 .Configure<Settings>(GetSettingsFile("appsettings.json", "Settings"))
+                .Configure<StreamAnnouncerSettings>(GetSettingsFile("appsettings.json", "StreamAnnouncerSettings"))
 
                 // Services
                 .AddSingleton<IStreamAnnouncer, StreamAnnouncer>()

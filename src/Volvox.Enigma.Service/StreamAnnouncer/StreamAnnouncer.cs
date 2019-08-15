@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.Options;
 using Serilog;
 using TwitchLib.Api.Helix.Models.Streams;
 using TwitchLib.Api.Helix.Models.Users;
+using Volvox.Enigma.Domain.Settings;
 using Volvox.Enigma.Domain.User;
 using Volvox.Enigma.Service.Discord;
 using Volvox.Enigma.Service.Twitch;
@@ -19,14 +21,16 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
     {
         private readonly DiscordSocketClient _discordClient;
         private readonly ILogger _logger;
+        private readonly StreamAnnouncerSettings _settings;
         private readonly ITwitchApiHelper _twitchApiHelper;
 
         public StreamAnnouncer(DiscordSocketClient discordClient, ITwitchApiHelper twitchApiHelper,
-            ILogger logger)
+            ILogger logger, IOptions<StreamAnnouncerSettings> settings)
         {
             _discordClient = discordClient;
             _twitchApiHelper = twitchApiHelper;
             _logger = logger;
+            _settings = settings.Value;
         }
 
         public async Task Announce(IEnumerable<Host> hosts, ulong guildId, ulong channelId, ulong roleId)
@@ -81,7 +85,13 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                     // Only announce Fortnite and Zone Wars
                     if (game.Name != "Fortnite" ||
-                        !stream.Title.StartsWith("Zone Wars", StringComparison.InvariantCultureIgnoreCase)) continue;
+                        !_settings.CreativeStreamTitles.Any(x =>
+                            stream.Title.StartsWith(x, StringComparison.InvariantCultureIgnoreCase) ||
+                            stream.Title.StartsWith(
+                                $"Viewer{x}", StringComparison.InvariantCultureIgnoreCase) ||
+                            stream.Title.StartsWith($"Enigma {x}", StringComparison.InvariantCultureIgnoreCase) ||
+                            stream.Title.StartsWith($"Enigma's {x}", StringComparison.InvariantCultureIgnoreCase)))
+                        continue;
 
                     users.Add(host, ( user, stream, game ));
                 }
