@@ -44,7 +44,15 @@ namespace Volvox.Enigma.Console
 
             discordSocketClient.Ready += () =>
             {
-                serilog.Information("Discord is ready");
+                serilog.Information("Discord client is ready");
+
+                return Task.CompletedTask;
+            };
+
+            discordSocketClient.GuildAvailable += guild =>
+            {
+                serilog.Information("Discord guild is ready");
+
                 mre.Set();
 
                 return Task.CompletedTask;
