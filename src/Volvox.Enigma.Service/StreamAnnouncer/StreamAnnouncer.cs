@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Rest;
 using Discord.WebSocket;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -97,15 +98,27 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
                 }
 
                 // Delete all previous messages from the bot
-                var messages =
-                    ( await channel.GetMessagesAsync().FlattenAsync() ).Where(m =>
-                        m.Author.Id == _discordClient.CurrentUser.Id);
+                var message =
+                    ( await channel.GetMessagesAsync().FlattenAsync() ).FirstOrDefault(m =>
+                        m.Author.Id == _discordClient.CurrentUser.Id) as RestUserMessage;
 
-                await channel.DeleteMessagesAsync(messages);
+                if (message == null)
+                {
+                    var b = await channel.SendMessageAsync(string.Empty,
+                        embed: EmbedHelper.GetStreamAnnouncementEmbed("Verified Hosts", "No verified hosts are online!",
+                            role.Color, users));
+                }
 
-                await channel.SendMessageAsync(string.Empty,
-                    embed: EmbedHelper.GetStreamAnnouncementEmbed("Verified Hosts", "No verified hosts are online!",
-                        role.Color, users));
+                if (message != null)
+                {
+                    await message.ModifyAsync(msg =>
+                    {
+                        msg.Content = string.Empty;
+                        msg.Embed = EmbedHelper.GetStreamAnnouncementEmbed("Verified Hosts",
+                            "No verified hosts are online!",
+                            role.Color, users);
+                    });
+                }
             }
             catch (Exception exception)
             {
