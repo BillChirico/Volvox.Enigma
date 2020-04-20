@@ -61,7 +61,7 @@ namespace Volvox.Enigma.Console
                 await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
                     settings.DiscordHostRoleId);
 
-                await Task.Delay(TimeSpan.FromSeconds(15));
+                await Task.Delay(TimeSpan.FromSeconds(5));
             }
         }
 
