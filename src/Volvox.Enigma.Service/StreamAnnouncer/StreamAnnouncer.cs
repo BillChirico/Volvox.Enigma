@@ -54,7 +54,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                 if (channel == null)
                 {
-                    _logger.Error($"Could not find channel (ID = {channelId} to announce streams!");
+                    _logger.Error($"Could not find channel (ID = {channelId}) to announce streams!");
 
                     return;
                 }
