@@ -104,7 +104,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                 if (message == null)
                 {
-                    _logger.Information("Sending new announcement message.");
+                    _logger.Information("Sending new announcement message");
 
                     await channel.SendMessageAsync(string.Empty,
                         embed: EmbedHelper.GetStreamAnnouncementEmbed("Verified Hosts", "No verified hosts are online!",
@@ -113,7 +113,7 @@ namespace Volvox.Enigma.Service.StreamAnnouncer
 
                 if (message != null)
                 {
-                    _logger.Information("Editing announcement message.");
+                    _logger.Information("Editing announcement message");
 
                     await message.ModifyAsync(msg =>
                     {

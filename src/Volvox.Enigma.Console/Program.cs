@@ -56,19 +56,13 @@ namespace Volvox.Enigma.Console
             serilog.Information("Volvox.Enigma initialised");
 
             // Run interval tasks
-            await Task.Run(async
-                () =>
+            while (true)
             {
-                while (true)
-                {
-                    await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
-                        settings.DiscordHostRoleId);
+                await streamAnnouncer.Announce(hosts.HostList, settings.DiscordGuildId, settings.DiscordChannelId,
+                    settings.DiscordHostRoleId);
 
-                    await Task.Delay(TimeSpan.FromSeconds(15));
-                }
-            });
-
-            await Task.Delay(Timeout.Infinite);
+                await Task.Delay(TimeSpan.FromSeconds(15));
+            }
         }
 
         private static ServiceProvider ConfigureServiceCollection(ServiceCollection serviceCollection)
