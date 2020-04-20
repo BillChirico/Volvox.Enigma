@@ -82,7 +82,7 @@ namespace Volvox.Enigma.Console
 
                 // Serilog
                 .AddSingleton((ILogger)new LoggerConfiguration()
-                    .WriteTo.Async(a => a.RollingFile("logs/enigma-{Date}.log"))
+                    .WriteTo.Async(a => a.RollingFile("logs/enigma-{Date}.log", retainedFileCountLimit: 3))
                     .WriteTo.Console()
                     .CreateLogger())
 
